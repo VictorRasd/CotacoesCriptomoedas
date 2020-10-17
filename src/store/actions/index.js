@@ -3,6 +3,7 @@ const TINKER_RECEIVED = "TINKER_RECEIVED";
 const TINKER_FAILED = "TINKER_FAILED";
 const UPDATE = "UPDATE"
 
+// Busca os dados da API de maneira asincrona
 function getTinkerAction() {
   return function(dispatch) {
     dispatch({

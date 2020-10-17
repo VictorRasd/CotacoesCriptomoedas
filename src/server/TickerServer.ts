@@ -304,4 +304,9 @@ let currencyPairs: string[] = [
 'USDT_ZRX',
 ]
 
+
+
+
+
+
 export default currencyPairs;

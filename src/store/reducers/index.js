@@ -9,13 +9,13 @@ function tinker(state = initialState, action) {
       state = Object.assign({}, state, {status: "waiting"});
       break;
     case TINKER_RECEIVED:
-      state = createInitalData(state, action.payload);
+      state = createInitialData(state, action.payload);
       break;
     case TINKER_FAILED:
       state = Object.assign({}, state, {status: "failed", error: action.payload});
       break;
     case UPDATE:
-      state = searchCurrency(state, action.payload);
+      state = searchCurrencyAndUpdate(state, action.payload);
       break;
     default:
       return state;
@@ -24,7 +24,9 @@ function tinker(state = initialState, action) {
   return state;
 }
 
-function createInitalData(state, data){
+// Esse método cria o array inicial de dados com todas as transações, deixando somente para o searchCurrencyAndUpdate()
+// atualizar
+function createInitialData(state, data){
   let allCurrencies = [];
   let currency = {};
   currencyPairs.forEach(currencyName => {
@@ -46,32 +48,26 @@ function createInitalData(state, data){
     }
   });
   return Object.assign({}, state, {data: allCurrencies, status: "received"});
-  // allCurrencies.forEach(element => {
-  //   if(element.isFrozen == '0'){
-  //     element.isFrozen = 'Não'
-  //   }
-  //   else{
-  //     element.isFrozen = 'Sim'
-  //   }
-  // });
 }
 
-function searchCurrency(state,data){
+// Recebe o dado do socket e atualiza a linha correspondente
+function searchCurrencyAndUpdate(state,data){
   let dataJson = JSON.parse(data);
-  if(dataJson[2] != undefined){
-    state.data.forEach(element => {
-      if(element.id == dataJson[2][0]){
-        element.last = "dataJson[2][1]";
-        element.lowestAsk = dataJson[2][2];
-        element.highestBid = dataJson[2][3];
-        element.percentChange = dataJson[2][4];
-        element.baseVolume = dataJson[2][5];
-        element.quoteVolume = dataJson[2][6];
-        element.isFrozen = dataJson[2][7];
-        element.high24hr = dataJson[2][8];
-        element.low24hr = dataJson[2][9];
+  if(dataJson[2] !== undefined){
+    for(let i = 0 ; i < state.data.length; i++){
+      if(state.data[i].id === dataJson[2][0]){
+        state.data[i].last = dataJson[2][1];
+        state.data[i].lowestAsk = dataJson[2][2];
+        state.data[i].highestBid = dataJson[2][3];
+        state.data[i].percentChange = dataJson[2][4];
+        state.data[i].baseVolume = dataJson[2][5];
+        state.data[i].quoteVolume = dataJson[2][6];
+        state.data[i].isFrozen = dataJson[2][7];
+        state.data[i].high24hr = dataJson[2][8];
+        state.data[i].low24hr = dataJson[2][9];
+        break;
       }
-    });
+    }
   }
   return Object.assign({}, state, {data: state.data, status: "updated"});
 }
