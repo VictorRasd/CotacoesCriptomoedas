@@ -1,6 +1,6 @@
 import React, {Component} from 'react'; 
 import { ICurrency } from '../server/TickerServer'
-import store from '../index'
+import store from '../../store/index'
 import { Box, TableBody, TableCell, TableContainer, TableHead, TableRow, Table, Typography} from '@material-ui/core';
 import Select from 'react-select'
 import  currencyPairs  from '../server/TickerServer'

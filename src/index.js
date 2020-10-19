@@ -3,32 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore , applyMiddleware} from 'redux';
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk';
-import {tinker, initialState} from './store/reducers/index'
-import {getTinkerAction} from './store/actions/index'
+import store from './store/index'
 
 
-let store = createStore(
-  tinker, 
-  initialState, 
-  applyMiddleware(thunk))
-store.dispatch(getTinkerAction());
-
-const socket = new WebSocket('wss://api2.poloniex.com');
-// Faz a inscrição ao Socket da poloniex
-socket.addEventListener('open', function (event) {
-    socket.send('{ "command": "subscribe", "channel": "1002" }');
-});
-
-// Criar o listener de evento sempre que receber uma atualização de algum dado
-socket.addEventListener('message', function (event) {
-    store.dispatch({type: 'UPDATE', payload: event.data});
-});
-
-
-export default store;
 
 
 ReactDOM.render(

@@ -1,5 +1,5 @@
 import {TINKER_FAILED, TINKER_RECEIVED,TINKER_REQUESTED, UPDATE } from '../actions/index'
-import currencyPairs from '../../server/TickerServer'
+import currencyPairs from '../../components/server/TickerServer'
 
 const initialState = { data: [], status:"" };
 
